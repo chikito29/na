@@ -10,7 +10,12 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use Illuminate\Http\Request;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Auth::routes();
+Route::resource('applications', 'ApplicationController');
+Route::resource('users', 'UserController');
+
+Route::get('/', function () {return view('welcome');});
+Route::get('logout', 'UserController@logout')->name('users.logout');
+Route::get('dashboard', 'HomeController@index');
