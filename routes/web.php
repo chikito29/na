@@ -17,5 +17,5 @@ Route::resource('applications', 'ApplicationController');
 Route::resource('users', 'UserController');
 
 Route::get('/', function () {return view('welcome');});
-Route::get('logout', 'UserController@logout')->name('users.logout');
+Route::get('logout/{id}', 'UserController@logout')->name('users.logout');
 Route::get('dashboard', 'HomeController@index');

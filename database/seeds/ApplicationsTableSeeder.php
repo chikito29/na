@@ -16,7 +16,7 @@ class ApplicationsTableSeeder extends Seeder
         $code = ['DLS', 'EQMS'];
         $name = ['Document Library System', 'Electronic Quality Management System'];
         $description = ['For archiving and retrieving documents', 'For Quality Assurance Department'];
-        $redirect = ['http://das.newsimapps.dev/callback', 'http://eqms.newsimapps.dev/callback'];
+        $redirect = ['http://das.newsimapps.dev/callback', 'http://eqms.newsimapps.dev/'];
 
 
         for ($i=0; $i < 2; $i++) {

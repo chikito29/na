@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use App\User;
+use Laravel\Passport\Token;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,4 +17,9 @@ use App\User;
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return User::with('roles.application')->find($request->user()->id);
+});
+
+Route::middleware('auth:api')->get('/logout', function (Request $request) {
+    $tokens = Token::where('user_id', $request->user()->id)->update(['revoked' => true]);
+    return 'User has logout.';
 });
