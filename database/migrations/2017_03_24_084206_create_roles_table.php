@@ -14,9 +14,9 @@ class CreateRolesTable extends Migration
     public function up()
     {
         Schema::create('roles', function (Blueprint $table) {
-            $table->increments('id');
             $table->integer('user_id');
             $table->integer('client_id');
+            $table->primary(['user_id', 'client_id']);
             $table->string('type')->default('default');     //super-admin, admin, default
             $table->timestamps();
         });

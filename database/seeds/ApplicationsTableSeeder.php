@@ -13,7 +13,7 @@ class ApplicationsTableSeeder extends Seeder
     public function run()
     {
         // Initial Data for Client Application
-        $code = ['DLS', 'EQMS'];
+        $code = ['DLS', 'eQMS'];
         $name = ['Document Library System', 'Electronic Quality Management System'];
         $description = ['For archiving and retrieving documents', 'For Quality Assurance Department'];
         $redirect = ['http://das.newsimapps.dev/callback', 'http://eqms.newsimapps.dev/'];

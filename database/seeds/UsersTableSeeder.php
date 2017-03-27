@@ -21,7 +21,6 @@ class UsersTableSeeder extends Seeder
             'employment_status' => 'active',
             'department' => 'Information Technology',
             'position' => 'Programmer',
-            'role' => 'super-admin'
         ]);
         $defaultUser->save();
         factory(App\User::class, 100)->create();

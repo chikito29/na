@@ -24,7 +24,6 @@ class CreateUsersTable extends Migration
             $table->string('employment_status');
             $table->string('department');
             $table->string('position');
-            $table->string('type');
             $table->rememberToken();
             $table->timestamps();
         });

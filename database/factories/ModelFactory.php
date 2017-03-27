@@ -115,6 +115,5 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'employment_status' => $faker->randomElement($employmentStatus),
         'department' => $faker->randomElement($departments),
         'position' => $faker->randomElement($positions),
-        'role' => $faker->randomElement($roles),
     ];
 });

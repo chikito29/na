@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Role;
 use Laravel\Passport\Token;
 
 /*
@@ -16,7 +17,15 @@ use Laravel\Passport\Token;
 */
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return User::with('roles.application')->find($request->user()->id);
+    $role = Role::where('user_id', $request->user()->id)
+                ->where('client_id', $request->client_id)
+                ->first();
+
+    $user = User::find($request->user()->id);
+    $user['role'] = $role->type;
+    return $user;
+
+    //return User::with('roles.application')->find($request->user()->id);
 });
 
 Route::middleware('auth:api')->get('/logout', function (Request $request) {
