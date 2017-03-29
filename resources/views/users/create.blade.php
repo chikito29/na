@@ -18,19 +18,23 @@
 @section('page-content-wrapper')
     <div class="page-content-wrap">
 
+        @if (count($errors) > 0)
         <div class="row">
             <div class="col-md-12">
-                <div class="alert alert-warning" role="alert">
+                <div class="alert alert-danger" role="alert">
                     <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-                    <strong>Important!</strong> Main feature of this page is "Change photo" function. Press button "Change photo" and try to use this awesome feature.
+                    <strong>Saving Failed!</strong> Please check all the fields and save again.
                 </div>
             </div>
         </div>
+        @endif
 
         <div class="row">
+            <form action="{{ route('users.store') }}" class="form-horizontal" method="post">
+                {{ csrf_field() }}
+
             <div class="col-md-9 col-sm-12 col-xs-12">
 
-                <form action="#" class="form-horizontal">
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <h3><span class="fa fa-pencil"></span> Personal Info</h3>
@@ -40,19 +44,38 @@
                         <div class="form-group">
                             <label class="col-md-3 col-xs-5 control-label">First Name</label>
                             <div class="col-md-9 col-xs-7">
-                                <input type="text" value="" class="form-control" name="first_name"/>
+                                <input type="text" value="{{ old('first_name') }}" class="form-control" name="first_name"/>
+                                @if ($errors->has('first_name'))
+                                    <span class="help-block successful">
+                                        <strong class="text-danger">{{ $errors->first('first_name') }}</strong>
+                                    </span>
+                                @endif
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 col-xs-5 control-label">Middle Name</label>
                             <div class="col-md-9 col-xs-7">
-                                <input type="text" value="" class="form-control" name="middle_name"/>
+                                <input type="text" value="{{ old('middle_name') }}" class="form-control" name="middle_name"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 col-xs-5 control-label">Last Name</label>
                             <div class="col-md-9 col-xs-7">
-                                <input type="text" value="" class="form-control" name="last_name"/>
+                                <input type="text" value="{{ old('last_name') }}" class="form-control" name="last_name"/>
+                                @if ($errors->has('last_name'))
+                                    <span class="help-block successful">
+                                        <strong class="text-danger">{{ $errors->first('last_name') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 col-xs-5 control-label">Gender</label>
+                            <div class="col-md-9 col-xs-7">
+                                <select class="form-control select" name="gender">
+                                    <option value="male" @if(old('gender') == 'male') selected @endif>Male</option>
+                                    <option value="female" @if(old('gender') == 'female') selected @endif>Female</option>
+                                </select>
                             </div>
                         </div>
                         <br>
@@ -66,55 +89,77 @@
                     </div>
                     <div class="panel-body form-group-separated">
                         <div class="form-group">
+                            <label class="col-md-3 col-xs-5 control-label">Employee ID</label>
+                            <div class="col-md-9 col-xs-7">
+                                <input type="text" class="form-control" name="employee_id" value="{{ old('employee_id') }}"/>
+                                @if ($errors->has('employee_id'))
+                                    <span class="help-block successful">
+                                        <strong class="text-danger">{{ $errors->first('employee_id') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 col-xs-5 control-label">Email</label>
+                            <div class="col-md-9 col-xs-7">
+                                <input type="text" class="form-control" name="email" value="{{ old('email') }}"/>
+                                @if ($errors->has('email'))
+                                    <span class="help-block successful">
+                                        <strong class="text-danger">{{ $errors->first('email') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 col-xs-5 control-label">Branch</label>
+                            <div class="col-md-9 col-xs-7">
+                                <select class="form-control select" name="branch">
+                                    @foreach($branches as $branch)
+                                    <option value="{{ $branch->name }}"  @if(old('branch') == $branch->name) selected @endif>{{ $branch->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-md-3 col-xs-5 control-label">Department</label>
                             <div class="col-md-9 col-xs-7">
-                                <select class="form-control select" data-live-search="true">
-                                    <option>Lorem ipsum dolor</option>
-                                    <option>Sit amet sicors</option>
-                                    <option>Mostoly stofu tiro</option>
-                                    <option>Vico sante fara</option>
-                                    <option>Delomo ponto si</option>
-                                    <option>Lorem ipsum dolor</option>
-                                    <option>Sit amet sicors</option>
-                                    <option>Mostoly stofu tiro</option>
-                                    <option>Vico sante fara</option>
-                                    <option>Delomo ponto si</option>
-                                    <option>Lorem ipsum dolor</option>
-                                    <option>Sit amet sicors</option>
-                                    <option>Mostoly stofu tiro</option>
-                                    <option>Vico sante fara</option>
-                                    <option>Delomo ponto si</option>
-                                    <option>Lorem ipsum dolor</option>
-                                    <option>Sit amet sicors</option>
-                                    <option>Mostoly stofu tiro</option>
+                                <select class="form-control select" name="department">
+                                    @foreach($departments as $department)
+                                    <option value="{{ $department->name }}"  @if(old('department') == $department->name) selected @endif>({{ $department->code }}) {{ $department->name }}</option>
+                                    @endforeach
                                 </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 col-xs-5 control-label">Is the User a Department Head?</label>
+                            <div class="col-md-9 col-xs-7">
+                                <label class="check"><input type="checkbox" class="icheckbox" name="department_head" value="1" @if(old('department_head') == '1') checked @endif/> Yes, this user is a Department Head</label>
+                                <span class="help-block">Check only if you are sure. Please refer to Newsim's Organizational Chart for more info.</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 col-xs-5 control-label">Position</label>
                             <div class="col-md-9 col-xs-7">
-                                <select class="form-control select" data-live-search="true">
-                                    <option>Lorem ipsum dolor</option>
-                                    <option>Sit amet sicors</option>
-                                    <option>Mostoly stofu tiro</option>
-                                    <option>Vico sante fara</option>
-                                    <option>Delomo ponto si</option>
+                                <select class="form-control select" data-live-search="true" name="position">
+                                    @foreach($positions as $position)
+                                    <option value="{{ $position->name }}" @if(old('position') == $position->name) selected @endif>{{ $position->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 col-xs-5 control-label">Status</label>
                             <div class="col-md-9 col-xs-7">
-                                <select class="form-control select">
-                                    <option>Active</option>
-                                    <option>Inactive</option>
+                                <select class="form-control select" name="employment_status">
+                                    <option value="active" @if(old('employment_status') == 'active') selected @endif>Active</option>
+                                    <option value="inactive" @if(old('employment_status') == 'inactive') selected @endif>Inactive</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 col-xs-5 control-label">Remarks</label>
                             <div class="col-md-9 col-xs-7">
-                                <textarea class="form-control" rows="3"></textarea>
+                                <textarea class="form-control" rows="3" name="remarks">{{ old('remarks') }}</textarea>
                             </div>
                         </div>
                         <br>
@@ -130,34 +175,54 @@
                         <div class="form-group">
                             <label class="col-md-3 col-xs-5 control-label">Role</label>
                             <div class="col-md-9 col-xs-7">
-                                <select class="form-control select">
-                                    <option>Super Admin</option>
-                                    <option>Admin</option>
-                                    <option selected>Default</option>
+                                <select class="form-control select" name="account_type">
+                                    <option value="super-admin" @if(old('account_type') == 'super-admin') selected @endif>Super Admin</option>
+                                    <option value="admin" @if(old('account_type') == 'admin') selected @endif>Admin</option>
+                                    <option value="default" @if(old('account_type') == 'default') selected @endif>Default</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 col-xs-5 control-label">Username</label>
                             <div class="col-md-9 col-xs-7">
-                                <input type="text" value="john.doe" class="form-control" disabled=""/>
+                                <input type="text" value="{{ old('username') }}" class="form-control" name="username"/>
+                                @if ($errors->has('username'))
+                                    <span class="help-block successful">
+                                        <strong class="text-danger">{{ $errors->first('username') }}</strong>
+                                    </span>
+                                @endif
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 col-xs-5 control-label">Password</label>
                             <div class="col-md-9 col-xs-7">
-                                <input type="password" value="London, UK" class="form-control" disabled/>
+                                <input type="password" class="form-control" name="password"/>
+                                @if ($errors->has('password'))
+                                    <span class="help-block successful">
+                                        <strong class="text-danger">{{ $errors->first('password') }}</strong>
+                                    </span>
+                                @endif
                             </div>
                         </div>
-
+                        <div class="form-group">
+                            <label class="col-md-3 col-xs-5 control-label">Confirm Password</label>
+                            <div class="col-md-9 col-xs-7">
+                                <input type="password" class="form-control" name="confirm_password"/>
+                                @if ($errors->has('confirm_password'))
+                                    <span class="help-block successful">
+                                        <strong class="text-danger">{{ $errors->first('confirm_password') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
                         <div class="form-group">
                             <div class="col-md-12 col-xs-5">
-                                <button class="btn btn-primary btn-rounded pull-right">Save</button>
+                                <button class="btn btn-primary btn-rounded pull-right" type="submit">Save</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                </form>
+
             </div>
 
             <div class="col-md-3">
@@ -193,145 +258,25 @@
                         <p>Sample of settings block</p>
                     </div>
                     <div class="panel-body form-horizontal form-group-separated">
+                        @foreach($applications as $application)
                         <div class="form-group">
-                            <label class="col-md-6 col-xs-6 control-label">HRIS</label>
+                            <label class="col-md-6 col-xs-6 control-label">{{ $application->code }}</label>
                             <div class="col-md-6 col-xs-6">
                                 <label class="switch">
-                                    <input type="checkbox" checked value="1"/>
+                                    <input type="checkbox" @if(old($application->code)) checked @endif name="{{ $application->code }}" value="{{ $application->id }}"/>
                                     <span></span>
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-md-6 col-xs-6 control-label">TMS</label>
-                            <div class="col-md-6 col-xs-6">
-                                <label class="switch">
-                                    <input type="checkbox" checked value="1"/>
-                                    <span></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-6 col-xs-6 control-label">eQMS</label>
-                            <div class="col-md-6 col-xs-6">
-                                <label class="switch">
-                                    <input type="checkbox" value="0"/>
-                                    <span></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-6 col-xs-6 control-label">DAS</label>
-                            <div class="col-md-6 col-xs-6">
-                                <label class="switch">
-                                    <input type="checkbox" value="0"/>
-                                    <span></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-6 col-xs-6 control-label">PMS</label>
-                            <div class="col-md-6 col-xs-6">
-                                <label class="switch">
-                                    <input type="checkbox" value="0"/>
-                                    <span></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-6 col-xs-6 control-label">INVENTORY</label>
-                            <div class="col-md-6 col-xs-6">
-                                <label class="switch">
-                                    <input type="checkbox" value="0"/>
-                                    <span></span>
-                                </label>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
 
+            </form>
+
         </div>
     </div>
-
-    <!-- MODALS -->
-    <div class="modal animated fadeIn" id="modal_change_photo" tabindex="-1" role="dialog" aria-labelledby="smallModalHead" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title" id="smallModalHead">Change photo</h4>
-                </div>
-
-                <form id="cp_crop" method="post" action="/assets/crop_image.php">
-                <div class="modal-body">
-                    <div class="text-center" id="cp_target">Use form below to upload file. Only .jpg files.</div>
-                    <input type="hidden" name="cp_img_path" id="cp_img_path"/>
-                    <input type="hidden" name="ic_x" id="ic_x"/>
-                    <input type="hidden" name="ic_y" id="ic_y"/>
-                    <input type="hidden" name="ic_w" id="ic_w"/>
-                    <input type="hidden" name="ic_h" id="ic_h"/>
-                </div>
-                </form>
-
-                <form id="cp_upload" method="post" enctype="multipart/form-data" action="/assets/upload_image.php">
-                <div class="modal-body form-horizontal form-group-separated">
-                    <div class="form-group">
-                        <label class="col-md-4 control-label">New Photo</label>
-                        <div class="col-md-4">
-                            <input type="file" class="fileinput btn-info" name="file" id="cp_photo" data-filename-placement="inside" title="Select file"/>
-                        </div>
-                    </div>
-                </div>
-                </form>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success disabled" id="cp_accept">Accept</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal animated fadeIn" id="modal_change_password" tabindex="-1" role="dialog" aria-labelledby="smallModalHead" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title" id="smallModalHead">Change password</h4>
-                </div>
-                <div class="modal-body">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer faucibus, est quis molestie tincidunt</p>
-                </div>
-                <div class="modal-body form-horizontal form-group-separated">
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Old Password</label>
-                        <div class="col-md-9">
-                            <input type="password" class="form-control" name="old_password"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">New Password</label>
-                        <div class="col-md-9">
-                            <input type="password" class="form-control" name="new_password"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Repeat New</label>
-                        <div class="col-md-9">
-                            <input type="password" class="form-control" name="re_password"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Proccess</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- EOF MODALS -->
 @endsection
 
 @section('scripts')

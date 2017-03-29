@@ -68,7 +68,7 @@
                     <div class="panel panel-default">
                         <div class="panel-body profile">
                             <div class="profile-image">
-                                <img src="/assets/images/users/no-image.jpg" alt="Nadia Ali"/>
+                                <img src="{{ url($user->photo) }}" alt="Nadia Ali"/>
                             </div>
                             <div class="profile-data">
                                 <div class="profile-data-name">{{ $user->fullName() }}</div>

@@ -118,10 +118,10 @@ class ApplicationController extends Controller
         ])->validate();
 
         $application = Client::find($id);
-        $application->code = $request['code'];
-        $application->name = $request['name'];
-        $application->description = $request['description'];
-        $application->redirect = $request['redirect'];
+        $application->code = $request->code;
+        $application->name = $request->name;
+        $application->description = $request->description;
+        $application->redirect = $request->redirect;
         $application->save();
         session()->flash('notify', ['message' => $application->name . ' has been updated!', 'type' => 'success']);
         return redirect()->route('applications.index');

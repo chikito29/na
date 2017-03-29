@@ -18,27 +18,31 @@
 @section('page-content-wrapper')
     <div class="page-content-wrap">
 
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-md-12">
                 <div class="alert alert-warning" role="alert">
                     <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
                     <strong>Important!</strong> Most of the information of the user is unedittable, that is because user data are being managed by the Human Resource Information System.
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <div class="row">
+            <form class="form-horizontal" action="{{ route('users.update', $user->id) }}" method="POST">
+                {{ method_field('PUT') }}
+                {{ csrf_field() }}
             <div class="col-md-3 col-sm-4 col-xs-5">
 
-                <form action="#" class="form-horizontal">
                 <div class="panel panel-default">
+
                     <div class="panel-body">
                         <h3><span class="fa fa-user"></span> {{ $user->fullName() }}</h3>
                         <p>{{ $user->position }} / {{ strtoupper($user->role) }}</p>
                         <div class="text-center" id="user_image">
-                            <img src="/assets/images/users/no-image.jpg" class="img-thumbnail"/>
+                            <img src="{{ url($user->photo) }}" class="img-thumbnail"/>
                         </div>
                     </div>
+
                     <div class="panel-body form-group-separated">
 
                         <div class="form-group">
@@ -57,10 +61,17 @@
                         <div class="form-group">
                             <label class="col-md-3 col-xs-5 control-label">Role</label>
                             <div class="col-md-9 col-xs-7">
-                                <select class="form-control select">
-                                    <option>Super Admin</option>
-                                    <option>Admin</option>
-                                    <option>Default</option>
+                                <select class="form-control select" name="account_type">
+                                    @if ($errors->count() > 0)
+                                        <option value="super-admin" @if(old('account_type') == 'super-admin') selected @endif>Super Admin</option>
+                                        <option value="admin" @if(old('account_type') == 'admin') selected @endif>Admin</option>
+                                        <option value="default" @if(old('account_type') == 'default') selected @endif>Default</option>
+                                    @else
+                                        <option value="super-admin" @if($user->type == 'super-admin') selected @endif>Super Admin</option>
+                                        <option value="admin" @if($user->type == 'admin') selected @endif>Admin</option>
+                                        <option value="default" @if($user->type == 'default') selected @endif>Default</option>
+                                    @endif
+
                                 </select>
                             </div>
                         </div>
@@ -68,57 +79,86 @@
                         <div class="form-group">
                             <label class="col-md-3 col-xs-5 control-label">Username</label>
                             <div class="col-md-9 col-xs-7">
-                                <input type="text" value="{{ $user->username }}" class="form-control"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-md-3 col-xs-5 control-label">E-mail</label>
-                            <div class="col-md-9 col-xs-7">
-                                <input type="text" value="johndoe@domain.com" class="form-control"/>
+                                <input type="text" value="@if ($errors->count() > 0){{ old('username') }}@else{{ $user->username }}@endif" class="form-control" name="username"/>
+                                @if ($errors->has('username'))
+                                    <span class="help-block successful">
+                                        <strong class="text-danger">{{ $errors->first('username') }}</strong>
+                                    </span>
+                                @endif
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-md-12 col-xs-12">
-                                <a href="#" class="btn btn-danger btn-block btn-rounded" data-toggle="modal" data-target="#modal_change_password">Change password</a>
+                                <a href="#" class="btn btn-danger btn-block btn-rounded" data-toggle="modal" data-target="#modal_change_password">Reset Password</a>
                             </div>
                         </div>
 
                     </div>
                 </div>
-                </form>
 
             </div>
+
             <div class="col-md-6 col-sm-8 col-xs-7">
 
-                <form action="#" class="form-horizontal">
                     <div class="panel panel-default">
+
                         <div class="panel-body">
                             <h3><span class="fa fa-pencil"></span> Personal Info</h3>
                             <p>This information lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer faucibus, est quis molestie tincidunt, elit arcu faucibus erat.</p>
                         </div>
+
                         <div class="panel-body form-group-separated">
+
                             <div class="form-group">
                                 <label class="col-md-3 col-xs-5 control-label">First Name</label>
                                 <div class="col-md-9 col-xs-7">
-                                    <input type="text" value="{{ $user->first_name }}" class="form-control" name="first_name" disabled/>
+                                    <input type="text" value="@if ($errors->count() > 0){{ old('first_name') }}@else{{ $user->first_name }}@endif" class="form-control" name="first_name"/>
+                                    @if ($errors->has('first_name'))
+                                        <span class="help-block successful">
+                                            <strong class="text-danger">{{ $errors->first('first_name') }}</strong>
+                                        </span>
+                                    @endif
                                 </div>
                             </div>
+
                             <div class="form-group">
                                 <label class="col-md-3 col-xs-5 control-label">Middle Name</label>
                                 <div class="col-md-9 col-xs-7">
-                                    <input type="text" value="{{ $user->middle_name }}" class="form-control" name="middle_name" disabled/>
+                                    <input type="text" value="@if ($errors->count() > 0){{ old('middle_name') }}@else{{ $user->middle_name }}@endif" class="form-control" name="middle_name"/>
                                 </div>
                             </div>
+
                             <div class="form-group">
                                 <label class="col-md-3 col-xs-5 control-label">Last Name</label>
                                 <div class="col-md-9 col-xs-7">
-                                    <input type="text" value="{{ $user->last_name }}" class="form-control" name="last_name" disabled/>
+                                    <input type="text" value="@if ($errors->count() > 0){{ old('last_name') }}@else{{ $user->last_name }}@endif" class="form-control" name="last_name"/>
+                                    @if ($errors->has('last_name'))
+                                        <span class="help-block successful">
+                                            <strong class="text-danger">{{ $errors->first('last_name') }}</strong>
+                                        </span>
+                                    @endif
                                 </div>
                             </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3 col-xs-5 control-label">Gender</label>
+                                <div class="col-md-9 col-xs-7">
+                                    <select class="form-control select" name="gender">
+                                        @if ($errors->count() > 0)
+                                            <option value="male" @if(old('gender') == 'male') selected @endif>Male</option>
+                                            <option value="female" @if(old('gender') == 'female') selected @endif>Female</option>
+                                        @else
+                                            <option value="male" @if($user->gender == 'male') selected @endif>Male</option>
+                                            <option value="female" @if($user->gender == 'female') selected @endif>Female</option>
+                                        @endif
+                                    </select>
+                                </div>
+                            </div>
+
                             <br>
                         </div>
+
                     </div>
 
                     <div class="panel panel-default">
@@ -128,67 +168,104 @@
                         </div>
                         <div class="panel-body form-group-separated">
                             <div class="form-group">
+                                <label class="col-md-3 col-xs-5 control-label">Employee ID</label>
+                                <div class="col-md-9 col-xs-7">
+                                    <input type="text" class="form-control" name="employee_id" value="@if ($errors->count() > 0){{ old('employee_id') }}@else{{ $user->employee_id }}@endif"/>
+                                    @if ($errors->has('employee_id'))
+                                        <span class="help-block successful">
+                                            <strong class="text-danger">{{ $errors->first('employee_id') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 col-xs-5 control-label">Email</label>
+                                <div class="col-md-9 col-xs-7">
+                                    <input type="text" class="form-control" name="email" value="@if ($errors->count() > 0){{ old('email') }}@else{{ $user->email }}@endif"/>
+                                    @if ($errors->has('email'))
+                                        <span class="help-block successful">
+                                            <strong class="text-danger">{{ $errors->first('email') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 col-xs-5 control-label">Branch</label>
+                                <div class="col-md-9 col-xs-7">
+                                    <select class="form-control select" name="branch">
+                                        @foreach($branches as $branch)
+                                            @if ($errors->count() > 0)
+                                                <option value="{{ $branch->name }}"  @if(old('branch') == $branch->name) selected @endif>{{ $branch->name }}</option>
+                                            @else
+                                                <option value="{{ $branch->name }}"  @if($user->branch == $branch->name) selected @endif>{{ $branch->name }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="col-md-3 col-xs-5 control-label">Department</label>
                                 <div class="col-md-9 col-xs-7">
-                                    <select class="form-control select" data-live-search="true">
-                                        <option>Lorem ipsum dolor</option>
-                                        <option>Sit amet sicors</option>
-                                        <option>Mostoly stofu tiro</option>
-                                        <option>Vico sante fara</option>
-                                        <option>Delomo ponto si</option>
-                                        <option>Lorem ipsum dolor</option>
-                                        <option>Sit amet sicors</option>
-                                        <option>Mostoly stofu tiro</option>
-                                        <option>Vico sante fara</option>
-                                        <option>Delomo ponto si</option>
-                                        <option>Lorem ipsum dolor</option>
-                                        <option>Sit amet sicors</option>
-                                        <option>Mostoly stofu tiro</option>
-                                        <option>Vico sante fara</option>
-                                        <option>Delomo ponto si</option>
-                                        <option>Lorem ipsum dolor</option>
-                                        <option>Sit amet sicors</option>
-                                        <option>Mostoly stofu tiro</option>
+                                    <select class="form-control select" data-live-search="true" name="department">
+                                        @foreach($departments as $department)
+                                            @if ($errors->count() > 0)
+                                                <option value="{{ $department->name }}"  @if(old('department') == $department->name) selected @endif>({{ $department->code }}) {{ $department->name }}</option>
+                                            @else
+                                                <option value="{{ $department->name }}"  @if($user->department == $department->name) selected @endif>({{ $department->code }}) {{ $department->name }}</option>
+                                            @endif
+                                        @endforeach
                                     </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 col-xs-5 control-label">Is the User a Department Head?</label>
+                                <div class="col-md-9 col-xs-7">
+                                    <label class="check"><input type="checkbox" class="icheckbox" name="department_head" value="1" @if($errors->count() > 0) @if(old('department_head') == '1') checked @endif @else @if($user->department_head == 1) checked @endif @endif/> Yes, this user is a Department Head</label>
+                                    <span class="help-block">Check only if you are sure. Please refer to Newsim's Organizational Chart for more info.</span>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-3 col-xs-5 control-label">Position</label>
                                 <div class="col-md-9 col-xs-7">
-                                    <select class="form-control select" data-live-search="true">
-                                        <option>Lorem ipsum dolor</option>
-                                        <option>Sit amet sicors</option>
-                                        <option>Mostoly stofu tiro</option>
-                                        <option>Vico sante fara</option>
-                                        <option>Delomo ponto si</option>
+                                    <select class="form-control select" data-live-search="true" name="position">
+                                        @foreach($positions as $position)
+                                            @if ($errors->count() > 0)
+                                                <option value="{{ $position->name }}" @if(old('position') == $position->name) selected @endif>{{ $position->name }}</option>
+                                            @else
+                                                <option value="{{ $position->name }}" @if($user->position == $position->name) selected @endif>{{ $position->name }}</option>
+                                            @endif
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-3 col-xs-5 control-label">Status</label>
                                 <div class="col-md-9 col-xs-7">
-                                    <select class="form-control select">
-                                        <option>Active</option>
-                                        <option>Inactive</option>
+                                    <select class="form-control select" name="employment_status">
+                                        <option value="active">Active</option>
+                                        <option value="inactive">Inactive</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-3 col-xs-5 control-label">Remarks</label>
                                 <div class="col-md-9 col-xs-7">
-                                    <textarea class="form-control" rows="3"></textarea>
+                                    <textarea class="form-control" rows="3" name="remarks">@if ($errors->count() > 0){{ old('remarks') }}@else{{ $user->remarks }}@endif</textarea>
                                 </div>
                             </div>
-                            <br>
+
+                            <div class="form-group">
+                                <div class="col-md-12 col-xs-5">
+                                    <button class="btn btn-primary btn-rounded pull-right" type="submit">Save</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-
-
-                </form>
             </div>
 
             <div class="col-md-3">
+
                 <div class="panel panel-default form-horizontal">
                     <div class="panel-body">
                         <h3><span class="fa fa-info-circle"></span> Overview</h3>
@@ -216,69 +293,36 @@
                 </div>
 
                 <div class="panel panel-default">
+
                     <div class="panel-body">
                         <h3><span class="fa fa-rocket"></span> Applications</h3>
                         <p>Sample of settings block</p>
                     </div>
-                    <div class="panel-body form-horizontal form-group-separated">
-                        <div class="form-group">
-                            <label class="col-md-6 col-xs-6 control-label">HRIS</label>
-                            <div class="col-md-6 col-xs-6">
-                                <label class="switch">
-                                    <input type="checkbox" checked value="1"/>
-                                    <span></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-6 col-xs-6 control-label">TMS</label>
-                            <div class="col-md-6 col-xs-6">
-                                <label class="switch">
-                                    <input type="checkbox" checked value="1"/>
-                                    <span></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-6 col-xs-6 control-label">eQMS</label>
-                            <div class="col-md-6 col-xs-6">
-                                <label class="switch">
-                                    <input type="checkbox" value="0"/>
-                                    <span></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-6 col-xs-6 control-label">DAS</label>
-                            <div class="col-md-6 col-xs-6">
-                                <label class="switch">
-                                    <input type="checkbox" value="0"/>
-                                    <span></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-6 col-xs-6 control-label">PMS</label>
-                            <div class="col-md-6 col-xs-6">
-                                <label class="switch">
-                                    <input type="checkbox" value="0"/>
-                                    <span></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-6 col-xs-6 control-label">INVENTORY</label>
-                            <div class="col-md-6 col-xs-6">
-                                <label class="switch">
-                                    <input type="checkbox" value="0"/>
-                                    <span></span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
+                    <div class="panel-body form-horizontal form-group-separated">
+                        @foreach($applications as $application)
+                        <div class="form-group">
+                            <label class="col-md-6 col-xs-6 control-label">{{ $application->code }}</label>
+                            <div class="col-md-6 col-xs-6">
+                                <label class="switch">
+                                    <?php $checked = false; ?>
+                                    @foreach($user->roles as $role)
+                                        @if($application->id == $role->client_id)
+                                            <?php $checked = true; ?>
+                                        @endif
+                                    @endforeach
+                                    <input type="checkbox" @if($checked == true) checked @endif name="{{ $application->code }}" value="{{ $application->id }}"/>
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+
+                </div>
+
+            </div>
+            </form>
         </div>
     </div>
 
@@ -312,44 +356,6 @@
                 </form>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success disabled" id="cp_accept">Accept</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal animated fadeIn" id="modal_change_password" tabindex="-1" role="dialog" aria-labelledby="smallModalHead" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title" id="smallModalHead">Change password</h4>
-                </div>
-                <div class="modal-body">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer faucibus, est quis molestie tincidunt</p>
-                </div>
-                <div class="modal-body form-horizontal form-group-separated">
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Old Password</label>
-                        <div class="col-md-9">
-                            <input type="password" class="form-control" name="old_password"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">New Password</label>
-                        <div class="col-md-9">
-                            <input type="password" class="form-control" name="new_password"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Repeat New</label>
-                        <div class="col-md-9">
-                            <input type="password" class="form-control" name="re_password"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Proccess</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>

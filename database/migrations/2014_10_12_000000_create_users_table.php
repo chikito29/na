@@ -15,17 +15,26 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('employee_id')->unique();
             $table->string('email')->unique();
             $table->string('username')->unique();
             $table->string('password');
             $table->string('first_name');
             $table->string('middle_name');
             $table->string('last_name');
+            $table->string('gender');
             $table->string('employment_status');
             $table->string('department');
+            $table->tinyinteger('department_head')->default(0);
             $table->string('position');
+            $table->string('branch');
+            $table->string('type');
+            $table->string('remarks', 4000);
+            $table->string('photo')->default('img/no-profile-image.png');
+            $table->tinyinteger('verified')->default(0);
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
