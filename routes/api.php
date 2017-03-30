@@ -1,10 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-use App\User;
-use App\Role;
-use Laravel\Passport\Token;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -15,20 +10,15 @@ use Laravel\Passport\Token;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+use Illuminate\Http\Request;
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    $role = Role::where('user_id', $request->user()->id)
-                ->where('client_id', $request->client_id)
-                ->first();
+Route::group(['middleware' => ['auth:api']], function () {
 
-    $user = User::find($request->user()->id);
-    $user['role'] = $role->type;
-    return $user;
+    Route::resource('users', 'Api\UserController', ['only' => ['index', 'show']]);
+    Route::resource('branches', 'Api\BranchController', ['only' => ['index', 'show']]);
+    Route::resource('departments', 'Api\DepartmentController', ['only' => ['index', 'show']]);
+    Route::resource('positions', 'Api\PositionController', ['only' => ['index', 'show']]);
 
-    //return User::with('roles.application')->find($request->user()->id);
-});
+    Route::get('user', 'Api\UserController@user')->name('user.show');
 
-Route::middleware('auth:api')->get('/logout', function (Request $request) {
-    $tokens = Token::where('user_id', $request->user()->id)->update(['revoked' => true]);
-    return 'User has logout.';
 });

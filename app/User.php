@@ -14,7 +14,7 @@ class User extends Authenticatable
 
     protected $dates = ['deleted_at'];
     protected $fillable = [];
-    protected $hidden = ['password', 'remember_token'];
+    protected $hidden = ['password', 'remember_token', 'deleted_at'];
 
     public function fullName() {
         return $this->first_name . ' ' . $this->last_name;
@@ -23,4 +23,25 @@ class User extends Authenticatable
     public function roles() {
         return $this->hasMany(Role::class);
     }
+
+    public function scopeInitialize($query) {
+        return $query;
+    }
+
+    public function scopeBranch($query, $value) {
+        return $query->where('branch', $value);
+    }
+
+    public function scopeDepartment($query, $value) {
+        return $query->where('department', $value);
+    }
+
+    public function scopePosition($query, $value) {
+        return $query->where('position', $value);
+    }
+
+    public function scopeDepartmentHead($query, $value) {
+        return $query->where('department_head', $value);
+    }
+
 }
