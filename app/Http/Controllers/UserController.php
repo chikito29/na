@@ -76,7 +76,7 @@ class UserController extends Controller
         $user->remarks = is_null($request->remarks) ? '' : $request->remarks;
         $user->type = $request->account_type;
         $user->username = $request->username;
-        $user->password = $request->password;
+        $user->password = bcrypt($request->password);
         $user->save();
 
         $applications = Client::where('revoked', '!=', 1)->get();
