@@ -131,9 +131,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-3 col-xs-5 control-label">Is the User a Department Head?</label>
+                            <label class="col-md-3 col-xs-5 control-label">Is the User a Chief?</label>
                             <div class="col-md-9 col-xs-7">
-                                <label class="check"><input type="checkbox" class="icheckbox" name="department_head" value="1" @if(old('department_head') == '1') checked @endif/> Yes, this user is a Department Head</label>
+                                <label class="check"><input type="checkbox" class="icheckbox" name="chief" value="1" @if(old('chief') == '1') checked @endif/> Yes, this user is a Chief</label>
                                 <span class="help-block">Check only if you are sure. Please refer to Newsim's Organizational Chart for more info.</span>
                             </div>
                         </div>

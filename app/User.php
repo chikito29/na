@@ -40,8 +40,8 @@ class User extends Authenticatable
         return $query->where('position', $value);
     }
 
-    public function scopeDepartmentHead($query, $value) {
-        return $query->where('department_head', $value);
+    public function scopeChief($query, $value) {
+        return $query->where('chief', $value);
     }
 
 }

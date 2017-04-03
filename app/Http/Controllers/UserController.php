@@ -69,7 +69,7 @@ class UserController extends Controller
         $user->employee_id = $request->employee_id;
         $user->email = $request->email;
         $user->department = $request->department;
-        $user->department_head = is_null($request->department_head) ? false : true;
+        $user->chief = is_null($request->chief) ? false : true;
         $user->position = $request->position;
         $user->branch = $request->branch;
         $user->employment_status = $request->employment_status;
@@ -154,7 +154,7 @@ class UserController extends Controller
         $user->employee_id = $request->employee_id;
         $user->email = $request->email;
         $user->department = $request->department;
-        $user->department_head = is_null($request->department_head) ? false : true;
+        $user->chief = is_null($request->chief) ? false : true;
         $user->position = $request->position;
         $user->branch = $request->branch;
         $user->employment_status = $request->employment_status;

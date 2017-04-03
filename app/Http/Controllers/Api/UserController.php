@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Role;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -13,7 +14,18 @@ class UserController extends Controller
     public function user(Request $request) {
         $role = Role::where('user_id', $request->user()->id)->where('client_id', $request->client_id)->first();
         if ( ! $role) {
-            abort(403, 'unauthorize');
+            return response(['error' => 'Unauthorized Access', 'user' => $request->user()], 403);
+        } else {
+            if ($role->expired_at) {
+                $currentDateTime = Carbon::now();
+                $expirationDateTime = Carbon::createFromFormat('Y-m-d H:i:s', $role->expired_at);
+                if ($expirationDateTime->lte($currentDateTime)) {
+                    $role->expired_at = null;
+                    $role->save();
+                    $role->delete();
+                    return response(['error' => 'Expired Authorization'], 403);
+                }
+            }
         }
         $user = User::find($request->user()->id);
         $user['role'] = $role->type;
@@ -35,8 +47,8 @@ class UserController extends Controller
             $users->position($position);
         }
 
-        if ($department_head = $request->department_head) {
-            $users->departmentHead($department_head);
+        if ($chief = $request->chief) {
+            $users->departmentHead($chief);
         }
 
         $users = $users->get();
@@ -46,6 +58,16 @@ class UserController extends Controller
 
     public function show($id) {
         return User::find($id);
+    }
+
+    public function update(Request $request, $id) {
+        $role = Role::where('user_id', $id)->where('client_id', $request->client_id)->first();
+        if ($role) {
+            $carbon = Carbon::now();
+            $role->expired_at = $carbon->addHours(12);
+            $role->save();
+            return $role;
+        }
     }
 
 }

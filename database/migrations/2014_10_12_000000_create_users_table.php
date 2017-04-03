@@ -25,7 +25,7 @@ class CreateUsersTable extends Migration
             $table->string('gender');
             $table->string('employment_status');
             $table->string('department');
-            $table->tinyinteger('department_head')->default(0);
+            $table->tinyinteger('chief')->default(0);
             $table->string('position');
             $table->string('branch');
             $table->string('type');

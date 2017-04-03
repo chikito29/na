@@ -19,6 +19,7 @@ class CreateRolesTable extends Migration
             $table->integer('client_id');
             $table->string('type')->default('default');     //super-admin, admin, default
             $table->timestamps();
+            $table->dateTime('expired_at')->nullable();
             $table->softDeletes();
         });
     }
