@@ -66,7 +66,7 @@
                 <div class="col-md-3">
                     <!-- CONTACT ITEM -->
                     <div class="panel panel-default">
-                        <div class="panel-body profile">
+                        <div class="panel-body profile" @if($user->employment_status == 'inactive') style="background-color: rgb(182,71,69);" @endif>
                             <div class="profile-image">
                                 <img src="{{ url($user->photo) }}" alt="Nadia Ali"/>
                             </div>

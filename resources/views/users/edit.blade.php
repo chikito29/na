@@ -242,8 +242,13 @@
                                 <label class="col-md-3 col-xs-5 control-label">Status</label>
                                 <div class="col-md-9 col-xs-7">
                                     <select class="form-control select" name="employment_status">
-                                        <option value="active">Active</option>
-                                        <option value="inactive">Inactive</option>
+                                        @if ($errors->count() > 0)
+                                            <option value="active" @if(old('employment_status') == 'active') selected @endif>Active</option>
+                                            <option value="inactive" @if(old('employment_status') == 'active') selected @endif>Inactive</option>
+                                        @else
+                                            <option value="active" @if($user->employment_status == 'active') selected @endif>Active</option>
+                                            <option value="inactive" @if($user->employment_status == 'inactive') selected @endif>Inactive</option>
+                                        @endif
                                     </select>
                                 </div>
                             </div>
