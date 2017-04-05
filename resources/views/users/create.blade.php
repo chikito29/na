@@ -255,17 +255,31 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <h3><span class="fa fa-rocket"></span> Applications</h3>
-                        <p>Sample of settings block</p>
+                        <p>Click the application code to change User's Role</p>
                     </div>
                     <div class="panel-body form-horizontal form-group-separated">
                         @foreach($applications as $application)
                         <div class="form-group">
-                            <label class="col-md-6 col-xs-6 control-label">{{ $application->code }}</label>
-                            <div class="col-md-6 col-xs-6">
+                            <label class="col-md-4 col-xs-6 control-label">{{ $application->code }}</label>
+                            <div class="col-md-3 col-xs-6">
                                 <label class="switch">
                                     <input type="checkbox" @if(old($application->code)) checked @endif name="{{ $application->code }}" value="{{ $application->id }}"/>
                                     <span></span>
                                 </label>
+                            </div>
+                            <div class="col-md-5 col-xs-12">
+                                <select class="form-control select" name="{{ $application->code }}_role">
+                                    @if ($errors->count() > 0)
+                                        <option value="super-admin" @if(old($application->code . '_role') == 'super-admin') selected @endif>Super Admin</option>
+                                        <option value="admin" @if(old($application->code . '_role') == 'admin') selected @endif>Admin</option>
+                                        <option value="default" @if(old($application->code . '_role') == 'default') selected @endif>Default</option>
+                                    @else
+                                        <option value="super-admin">Super Admin</option>
+                                        <option value="admin">Admin</option>
+                                        <option value="default" selected>Default</option>
+                                    @endif
+
+                                </select>
                             </div>
                         </div>
                         @endforeach

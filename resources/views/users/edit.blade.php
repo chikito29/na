@@ -302,8 +302,8 @@
                     <div class="panel-body form-horizontal form-group-separated">
                         @foreach($applications as $application)
                         <div class="form-group">
-                            <label class="col-md-6 col-xs-6 control-label">{{ $application->code }}</label>
-                            <div class="col-md-6 col-xs-6">
+                            <label class="col-md-4 col-xs-6 control-label">{{ $application->code }}</label>
+                            <div class="col-md-3 col-xs-6">
                                 <label class="switch">
                                     <?php $checked = false; ?>
                                     @foreach($user->roles as $role)
@@ -314,6 +314,25 @@
                                     <input type="checkbox" @if($checked == true) checked @endif name="{{ $application->code }}" value="{{ $application->id }}"/>
                                     <span></span>
                                 </label>
+                            </div>
+                            <div class="col-md-5 col-xs-12">
+                                <select class="form-control select" name="{{ $application->code }}_role">
+                                    @if ($errors->count() > 0)
+                                        <option value="super-admin" @if(old($application->code . '_role') == 'super-admin') selected @endif>Super Admin</option>
+                                        <option value="admin" @if(old($application->code . '_role') == 'admin') selected @endif>Admin</option>
+                                        <option value="default" @if(old($application->code . '_role') == 'default') selected @endif>Default</option>
+                                    @else
+                                        <?php $type = 'default' ?>
+                                        @foreach($user->roles as $role)
+                                            @if($application->id == $role->client_id)
+                                                <?php $type = $role->type ?>
+                                            @endif
+                                        @endforeach
+                                        <option value="super-admin" @if($type == 'super-admin') selected @endif>Super Admin</option>
+                                        <option value="admin" @if($type == 'admin') selected @endif>Admin</option>
+                                        <option value="default" @if($type == 'default') selected @endif>Default</option>
+                                    @endif
+                                </select>
                             </div>
                         </div>
                         @endforeach

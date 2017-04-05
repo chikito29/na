@@ -86,7 +86,7 @@
                 <div class="links">
                     <a href="https://tms.newsimapps.dev">Training Management</a>
                     <a href="https://hris.newsimapps.dev">Human Resource</a>
-                    <a href="https://eqms.newsimapps.dev">Quality Management</a>
+                    <a href="http://eqms.newsimapps.dev">Electronic Quality Management</a>
                     <a href="https://das.newsimapps.dev">Document Archives</a>
                     <a href="https://pms.newsimapps.dev">Plan Maintenance</a>
                     <a href="https://inventory.newsimapps.dev">Inventory</a>

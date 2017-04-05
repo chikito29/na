@@ -15,7 +15,7 @@ class RolesTableSeeder extends Seeder
     public function run()
     {
         $faker = Faker\Factory::create();
-        $roles = ['super-admin', 'admin', 'default'];
+        $roles = ['admin', 'default'];
         $users = User::all();
         $applications = Client::all();
 
@@ -24,7 +24,11 @@ class RolesTableSeeder extends Seeder
                 $role = new Role();
                 $role->user_id = $user->id;
                 $role->client_id = $application->id;
-                $role->type = $faker->randomElement($roles);
+                if($user->id < 3) {
+                    $role->type = 'super-admin';
+                } else {
+                    $role->type = $faker->randomElement($roles);
+                }
                 $role->save();
             }
         }

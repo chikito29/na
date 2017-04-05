@@ -85,6 +85,7 @@ class UserController extends Controller
                 $role = new Role();
                 $role->user_id = $user->id;
                 $role->client_id = $application->id;
+                $role->type = $request[$application->code . '_role'];
                 $role->save();
             } else {
                 $role = new Role();
@@ -170,6 +171,8 @@ class UserController extends Controller
                 foreach (Role::withTrashed()->where('user_id', $id)->get() as $role) {
                     if ($role->client_id == $application->id) {
                         $hasRole = true;
+                        $role->type = $request[$application->code . '_role'];
+                        $role->save();
                         $role->restore();
                     }
                 }
@@ -178,6 +181,7 @@ class UserController extends Controller
                     $role = new Role();
                     $role->user_id = $user->id;
                     $role->client_id = $application->id;
+                    $role->type = $request[$application->code . '_role'];
                     $role->save();
                 }
 
@@ -186,6 +190,8 @@ class UserController extends Controller
                 foreach (Role::withTrashed()->where('user_id', $id)->get() as $role) {
                     if ($role->client_id == $application->id) {
                         $hasRole = true;
+                        $role->type = $request[$application->code . '_role'];
+                        $role->save();
                         $role->delete();
                     }
                 }
@@ -194,6 +200,7 @@ class UserController extends Controller
                     $role = new Role();
                     $role->user_id = $user->id;
                     $role->client_id = $application->id;
+                    $role->type = $request[$application->code . '_role'];
                     $role->save();
                     $role->delete();
                 }

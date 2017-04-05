@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 use App\User;
 use App\Branch;
 use App\Department;
+use Laravel\Passport\Client;
 use App\Position;
 
 class UsersTableSeeder extends Seeder
@@ -19,6 +20,7 @@ class UsersTableSeeder extends Seeder
         $branches = Branch::all();
         $departments = Department::all();
         $positions = Position::all();
+        $applications = Client::all();
 
         // Default Account
         $user = new User();
