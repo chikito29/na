@@ -12,21 +12,26 @@ class UserController extends Controller
 {
 
     public function user(Request $request) {
+        if ($request->user()->employment_status == 'inactive') {
+            return response(['error' => 'Inactive Account', 'user' => $request->user()], 403);
+        }
+
         $role = Role::where('user_id', $request->user()->id)->where('client_id', $request->client_id)->first();
         if ( ! $role) {
             return response(['error' => 'Unauthorized Access', 'user' => $request->user()], 403);
-        } else {
-            if ($role->expired_at) {
-                $currentDateTime = Carbon::now();
-                $expirationDateTime = Carbon::createFromFormat('Y-m-d H:i:s', $role->expired_at);
-                if ($expirationDateTime->lte($currentDateTime)) {
-                    $role->expired_at = null;
-                    $role->save();
-                    $role->delete();
-                    return response(['error' => 'Expired Authorization'], 403);
-                }
+        }
+
+        if ($role->expired_at) {
+            $currentDateTime = Carbon::now();
+            $expirationDateTime = Carbon::createFromFormat('Y-m-d H:i:s', $role->expired_at);
+            if ($expirationDateTime->lte($currentDateTime)) {
+                $role->expired_at = null;
+                $role->save();
+                $role->delete();
+                return response(['error' => 'Expired Authorization'], 403);
             }
         }
+
         $user = User::find($request->user()->id);
         $user['role'] = $role->type;
         return $user;
