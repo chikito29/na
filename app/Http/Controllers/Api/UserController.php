@@ -53,7 +53,7 @@ class UserController extends Controller
         }
 
         if ($chief = $request->chief) {
-            $users->departmentHead($chief);
+            $users->chief($chief);
         }
 
         $users = $users->get();
