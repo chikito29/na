@@ -73,13 +73,16 @@
                     </li>
                     <!-- END SEARCH -->
                     <!-- SIGN OUT -->
-                    <li class="xn-icon-button pull-right last">
+                    <li class="xn-icon-button pull-right">
                         <a href="#"><span class="fa fa-power-off"></span></a>
                         <ul class="xn-drop-left animated zoomIn">
                             <li><a href="#" class="mb-control" data-box="#mb-signout"><span class="fa fa-sign-out"></span> Sign Out</a></li>
                         </ul>
                     </li>
                     <!-- END SIGN OUT -->
+
+                 	<li class="pull-right"><a href="#"><strong>{{ Auth::user()->fullName() }}</strong></a></li>
+                    
                 </ul>
                 <!-- END X-NAVIGATION VERTICAL -->
 
