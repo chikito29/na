@@ -27,7 +27,7 @@ class UsersTableSeeder extends Seeder
         $user->employee_id = $faker->unique()->numberBetween($min = 1000, $max = 9000);
         $user->email = 'mobile@newsim.ph';
         $user->username = 'daniel';
-        $user->password = bcrypt('password');
+        $user->password = bcrypt('root');
         $user->first_name = 'Daniel';
         $user->middle_name = '';
         $user->last_name = 'Bajana';
@@ -36,7 +36,7 @@ class UsersTableSeeder extends Seeder
         $user->department = 'Information Technology';
         $user->position = 'Programmer';
         $user->branch = 'Makati';
-        $user->type = 'super-admin';
+        $user->type = 'admin';
         $user->remarks = $faker->text($maxNbChars = 100);
         $user->verified = true;
         $user->save();
@@ -59,16 +59,53 @@ class UsersTableSeeder extends Seeder
         $user->verified = true;
         $user->save();
 
+        $user = new User();
+        $user->employee_id = $faker->unique()->numberBetween($min = 1000, $max = 9000);
+        $user->email = 'qmr.jenny@gmail.com';
+        $user->username = 'jenny';
+        $user->password = bcrypt('root');
+        $user->first_name = 'Jenny';
+        $user->middle_name = 'Fajardo';
+        $user->last_name = 'Ludovico';
+        $user->gender = 'female';
+        $user->employment_status = 'active';
+        $user->department = 'Quality Management Relation';
+        $user->position = 'QMRA';
+        $user->branch = 'Makati';
+        $user->type = 'default';
+        $user->remarks = $faker->text($maxNbChars = 100);
+        $user->verified = true;
+        $user->save();
+
+		$user = new User();
+        $user->employee_id = $faker->unique()->numberBetween($min = 1000, $max = 9000);
+        $user->email = 'documentcontroller.clarisa@gmail.com';
+        $user->username = 'clarisa';
+        $user->password = bcrypt('root');
+        $user->first_name = 'Clarisa';
+        $user->middle_name = '';
+        $user->last_name = 'Surname';
+        $user->gender = 'female';
+        $user->employment_status = 'active';
+        $user->department = 'Quality Management Relation';
+        $user->position = 'Document Controller';
+        $user->branch = 'Makati';
+        $user->type = 'default';
+        $user->remarks = $faker->text($maxNbChars = 100);
+        $user->verified = true;
+        $user->save();
+
         for ($i=0; $i < 100; $i++) {
             $user = new User();
             $user->employee_id = $faker->unique()->numberBetween($min = 1000, $max = 9000);
             $user->email = $faker->email;
             $user->username = $faker->unique()->userName;
-            $user->password = bcrypt('password');
+            $user->password = bcrypt('root');
             $user->first_name = $faker->firstName;
             $user->middle_name = $faker->lastName;
             $user->last_name = $faker->lastName;
             $user->gender = $faker->randomElement(['male', 'female']);
+            $user->chief = $faker->randomElement(0, 1);
             $user->employment_status = $faker->randomElement(['active', 'inactive']);
             $user->department = $faker->randomElement($departments->toArray())['name'];
             $user->position = $faker->randomElement($positions->toArray())['name'];
