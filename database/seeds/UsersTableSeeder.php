@@ -105,7 +105,7 @@ class UsersTableSeeder extends Seeder
             $user->middle_name = $faker->lastName;
             $user->last_name = $faker->lastName;
             $user->gender = $faker->randomElement(['male', 'female']);
-            $user->chief = $faker->randomElement(0, 1);
+            $user->chief = $faker->randomElement([0, 1]);
             $user->employment_status = $faker->randomElement(['active', 'inactive']);
             $user->department = $faker->randomElement($departments->toArray())['name'];
             $user->position = $faker->randomElement($positions->toArray())['name'];
