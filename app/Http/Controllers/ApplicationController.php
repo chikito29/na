@@ -146,7 +146,7 @@ class ApplicationController extends Controller
             $application->revoked = 1;
             $application->save();
             session()->flash('notify', ['message' => $application->name . ' has been removed!', 'type' => 'success']);
-            return redirect()->route('applications.index');
+            return redirect('eqms.newsimapps.dev');
         }
     }
 }

@@ -15,7 +15,7 @@ class RolesTableSeeder extends Seeder
     public function run()
     {
         $faker = Faker\Factory::create();
-        $roles = ['admin', 'default'];
+        $roles = ['admin', 'default', 'document-controller'];
         $users = User::all();
         $applications = Client::all();
 
