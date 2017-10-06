@@ -72,11 +72,16 @@
                             </div>
                             <div class="profile-data">
                                 <div class="profile-data-name">{{ $user->fullName() }}</div>
-                                <div class="profile-data-title">{{ strtoupper($user->role) }}</div>
+                                <div class="profile-data-title">{{ strtoupper($user->position) }}</div>
+                                @if($user->employment_status == 'active')
+                                    <button class="btn btn-danger btn-block">De-activate</button>
+                                @else
+                                    <button class="btn btn-success btn-block">Activate</button>
+                                @endif
                             </div>
                             <div class="profile-controls">
-                                <a href="#" class="profile-control-left"><span class="fa fa-times"></span></a>
-                                <a href="{{ route('users.edit', $user->id) }}" class="profile-control-right"><span class="fa fa-pencil"></span></a>
+                                    <a href="#" class="profile-control-left"><span class="fa fa-times"></span></a>
+                                    <a href="{{ route('users.edit', $user->id) }}" class="profile-control-right"><span class="fa fa-pencil"></span></a>
                             </div>
                         </div>
                         <div class="panel-body">
