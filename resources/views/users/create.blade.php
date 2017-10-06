@@ -273,9 +273,11 @@
                                         <option value="super-admin" @if(old($application->code . '_role') == 'super-admin') selected @endif>Super Admin</option>
                                         <option value="admin" @if(old($application->code . '_role') == 'admin') selected @endif>Admin</option>
                                         <option value="default" @if(old($application->code . '_role') == 'default') selected @endif>Default</option>
+                                        <option value="document_controller" @if(old($application->code . '_role') == 'default') selected @endif>Default</option>
                                     @else
                                         <option value="super-admin">Super Admin</option>
                                         <option value="admin">Admin</option>
+                                        <option value="document_controller">Document Controller</option>
                                         <option value="default" selected>Default</option>
                                     @endif
 

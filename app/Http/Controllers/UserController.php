@@ -96,7 +96,8 @@ class UserController extends Controller
             }
         }
 
-        return User::with('roles')->find($user->id);
+        session()->flash('notify', ['message' => 'User successfully created!', 'type' => 'success']);
+        return redirect()->route('users.index');
     }
 
     /**
