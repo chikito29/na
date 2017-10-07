@@ -27,6 +27,7 @@ class UserController extends Controller
             $users = User::where('first_name', 'LIKE', '%' . $query . '%')
                 ->orWhere('last_name', 'LIKE', '%' . $query . '%')
                 ->orWhere('department', 'LIKE', '%' . $query . '%')
+                ->orWhere('type', 'LIKE', '%' . $query . '%')
                 ->orWhere('position', 'LIKE', '%' . $query . '%')->paginate(12);
 
             return view('users.index', compact('users'));
@@ -220,13 +221,55 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+       $this->deletable($user);
+
+        if(session('notify')) {
+            return redirect()->route('users.index');
+        }
+
+        $user->delete($user); //soft delete user
+
+        session()->flash('notify', ['message' => $user->fullName() . '\' account has been deleted!', 'type' => 'success']);
+        return redirect()->route('users.index');
     }
 
     public function logout($id) {
         $tokens = Token::where('user_id', Auth::user()->id)->update(['revoked' => true]);
         return view('auth.logout');
+    }
+
+    public function deletable($user) {
+        $client = new \GuzzleHttp\Client();
+        $res = $client->get("eqms.dev/eqms-user/$user->id");
+        $super_admins = count(User::where('type', 'super-admin')->get());
+
+        if($super_admins == 1 && $user->id == 2) {
+            session()->flash('notify', ['message' => 'This account cannot be de-activated/deleted, this is a reserved SuperAdmin account.', 'type' => 'error']);
+        } elseif($res->getBody() == 'admin') {
+            session()->flash('notify', ['message' => 'This account is currently being used on eQMS as an administrator and cannot be de-activated/deleted.', 'type' => 'error']);
+        }
+    }
+
+    public function changeStatus($id){
+        $user = User::find($id);
+
+        $this->deletable($user);
+
+        if(session('notify')) {
+            return redirect()->route('users.index');
+        }
+
+        if(request('change-to') == 'Activate') {
+            $user->employment_status = 'active';
+            $user->save();
+        } else {
+            $user->employment_status = 'inactive';
+            $user->save();
+        }
+
+        session()->flash('notify', ['message' => $user->fullName() . ' has been updated!', 'type' => 'success']);
+        return redirect()->route('users.index');
     }
 }

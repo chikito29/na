@@ -22,12 +22,13 @@
 
 @section('page-content-wrapper')
     <div class="page-content-wrap">
+        <form action="" method="post" id="delete" hidden>{{ csrf_field() }} {{ method_field('delete') }}</form>
         <div class="row">
             <div class="col-md-12">
 
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <p>Use search to find user. You can search by: name, department, position or status. Or use the advanced search.</p>
+                        <p>Use search to find user. You can search by: name, department, position, type or status.</p>
                         <div class="form-group">
                             <form class="" action="{{ route('users.index') }}" method="GET">
                             <div class="col-md-8">
@@ -73,15 +74,17 @@
                             <div class="profile-data">
                                 <div class="profile-data-name">{{ $user->fullName() }}</div>
                                 <div class="profile-data-title">{{ strtoupper($user->position) }}</div>
-                                @if($user->employment_status == 'active')
-                                    <button class="btn btn-danger btn-block">De-activate</button>
-                                @else
-                                    <button class="btn btn-success btn-block">Activate</button>
-                                @endif
+                                <form action="{{ route('users.change_status',$user->id) }}" method="get">
+                                    @if($user->employment_status == 'active')
+                                        <input type="submit" name="change-to" value="De-activate" class="btn btn-danger btn-block" />
+                                    @else
+                                        <input type="submit" name="change-to" value="Activate" class="btn btn-success btn-block" />
+                                    @endif
+                                </form>
                             </div>
                             <div class="profile-controls">
-                                    <a href="#" class="profile-control-left"><span class="fa fa-times"></span></a>
-                                    <a href="{{ route('users.edit', $user->id) }}" class="profile-control-right"><span class="fa fa-pencil"></span></a>
+                                <a href="#" class="profile-control-left" id="{{ $user->id }}"><span class="fa fa-times"></span></a>
+                                <a href="{{ route('users.edit', $user->id) }}" class="profile-control-right"><span class="fa fa-pencil"></span></a>
                             </div>
                         </div>
                         <div class="panel-body">
@@ -99,3 +102,14 @@
         </div>
     </div>
 @endsection
+
+@section('scripts')
+    <script>
+        $('a[class="profile-control-left"]').on('click', function(){
+            url = 'users/' + this.id
+            form = $('form[id="delete"]')
+            form.attr('action', url)
+            form.submit()
+        });
+    </script>
+@stop
