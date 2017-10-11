@@ -20,27 +20,10 @@
 
             <div class="login-box animated fadeInDown">
                 <div class="login-body">
-                    <div class="login-title"><strong>Reset </strong> Password</div>
-                    <form class="form-horizontal" role="form" method="POST" action="{{ route('password.request') }}">
-                        {{ csrf_field() }}
+                    <div class="login-title"><strong>Change </strong> Password</div>
+                    <form class="form-horizontal" role="form" method="POST" action="{{ route('process-password-change', $user->id) }}">
+                        {{ csrf_field() }} {{ method_field('put') }}
 
-                        <input type="hidden" name="token" value="{{ $token }}">
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <div class="col-md-12">
-                                <div class="input-group">
-                                    <div class="input-group-addon">
-                                        <span class="fa fa-user"></span>
-                                    </div>
-                                    <input id="email" type="email" class="form-control" placeholder="Email" name="email" value="{{ $email or old('email') }}" required autofocus>
-                                </div>
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong class="text-danger">{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                             <div class="col-md-12">
                                 <div class="input-group">
@@ -56,6 +39,7 @@
                                 @endif
                             </div>
                         </div>
+
                         <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
                             <div class="col-md-12">
                                 <div class="input-group">
@@ -73,7 +57,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-12">
-                                <button class="btn btn-primary btn-lg btn-block">Reset Password</button>
+                                <button class="btn btn-primary btn-lg btn-block">Change Password</button>
                             </div>
                         </div>
                     </form>

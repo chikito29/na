@@ -45,22 +45,22 @@
 
                     <div class="panel-body form-group-separated">
 
-                        <div class="form-group">
-                            <div class="col-md-12 col-xs-12">
-                                <a href="#" class="btn btn-primary btn-block btn-rounded" data-toggle="modal" data-target="#modal_change_photo">Change Photo</a>
-                            </div>
-                        </div>
+                        {{--<div class="form-group">--}}
+                            {{--<div class="col-md-12 col-xs-12">--}}
+                                {{--<a href="#" class="btn btn-primary btn-block btn-rounded" data-toggle="modal" data-target="#modal_change_photo">Change Photo</a>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
 
                         <div class="form-group">
-                            <label class="col-md-3 col-xs-5 control-label">#ID</label>
-                            <div class="col-md-9 col-xs-7">
+                            <label class="col-md-4 col-xs-5 control-label">#ID</label>
+                            <div class="col-md-8 col-xs-7">
                                 <input type="text" value="{{ $user->id }}" class="form-control" disabled/>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-md-3 col-xs-5 control-label">Role</label>
-                            <div class="col-md-9 col-xs-7">
+                            <label class="col-md-4 col-xs-5 control-label">Role</label>
+                            <div class="col-md-8 col-xs-7">
                                 <select class="form-control select" name="account_type">
                                     @if ($errors->count() > 0)
                                         <option value="super-admin" @if(old('account_type') == 'super-admin') selected @endif>Super Admin</option>
@@ -77,8 +77,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="col-md-3 col-xs-5 control-label">Username</label>
-                            <div class="col-md-9 col-xs-7">
+                            <label class="col-md-4 col-xs-5 control-label">Username</label>
+                            <div class="col-md-8 col-xs-7">
                                 <input type="text" value="@if ($errors->count() > 0){{ old('username') }}@else{{ $user->username }}@endif" class="form-control" name="username"/>
                                 @if ($errors->has('username'))
                                     <span class="help-block successful">
@@ -90,10 +90,9 @@
 
                         <div class="form-group">
                             <div class="col-md-12 col-xs-12">
-                                <a href="#" class="btn btn-danger btn-block btn-rounded" data-toggle="modal" data-target="#modal_change_password">Reset Password</a>
+                                <a href="{{ route('change-password', $user->id) }}" class="btn btn-danger btn-block btn-rounded" value="Reset Password">Reset Password</a>
                             </div>
                         </div>
-
                     </div>
                 </div>
 
@@ -379,7 +378,7 @@
                 </div>
                 </form>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success disabled" id="cp_accept">Accept</button>
+                    <button type="button" class="btn btn-success" id="cp_accept">Accept</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>

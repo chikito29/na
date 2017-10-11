@@ -64,6 +64,7 @@
 
         <div class="row">
             @foreach($users as $user)
+                @if($user->id == auth()->user()->id) @continue @endif
                 <div class="col-md-3">
                     <!-- CONTACT ITEM -->
                     <div class="panel panel-default">

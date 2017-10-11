@@ -272,4 +272,21 @@ class UserController extends Controller
         session()->flash('notify', ['message' => $user->fullName() . ' has been updated!', 'type' => 'success']);
         return redirect()->route('users.index');
     }
+
+    public function changePassword($id) {
+        $user = User::find($id);
+        return view('auth.passwords.reset', compact('user'));
+    }
+
+    public function processPasswordChange($id, Request $request) {
+        $user = User::find($id);
+
+        $this->validate($request, ['password' => 'required', 'password_confirmation' => 'required|same:password']);
+
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+        session()->flash('notify', ['message' => $user->fullName() . '\'s password has been updated!', 'type' => 'success']);
+        return redirect()->route('users.edit', $user->id);
+    }
 }
